@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val logView = findViewById<TextView>(R.id.logview_id)
+      /*  val logView = findViewById<TextView>(R.id.logview_id)
 
         mDPM = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager?
         mDeviceAdmin = ComponentName(this, AdminReceiver::class.java)
@@ -64,10 +64,10 @@ class MainActivity : AppCompatActivity() {
         firewall.setOnClickListener { callbackFirewall() }
 
         var requestButton = findViewById<Button>(R.id.reqHttp)
-        requestButton.setOnClickListener { requestHttp() }
+        requestButton.setOnClickListener { requestHttp() }*/
     }
 
-    private fun requestHttp() {
+    /*private fun requestHttp() {
         val queue = Volley.newRequestQueue(this)
         val url = "https://www.applevrn.ru"
 
@@ -291,6 +291,6 @@ class MainActivity : AppCompatActivity() {
         } catch (ex: SecurityException) {
             mUtils!!.log("Error log!")
         }
-    }
+    }*/
 
 }
