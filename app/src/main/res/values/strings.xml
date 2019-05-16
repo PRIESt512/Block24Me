@@ -51,4 +51,6 @@
     <string name="item_menu_log">Отчет</string>
     <string name="item_menu_settings">Настройки</string>
 
+    <string name="admin_rule">Предоставление прав администратора</string>
+
 </resources>

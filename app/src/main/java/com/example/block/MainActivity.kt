@@ -3,26 +3,15 @@ package com.example.block
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.samsung.android.knox.AppIdentity
-import com.samsung.android.knox.EnterpriseDeviceManager
-import com.samsung.android.knox.license.KnoxEnterpriseLicenseManager
-import com.samsung.android.knox.net.firewall.DomainFilterRule
-import com.samsung.android.knox.net.firewall.Firewall
-import com.samsung.android.knox.net.firewall.FirewallResponse
-import com.samsung.android.knox.net.firewall.FirewallRule
-import com.samsung.android.knox.net.firewall.Firewall.AddressType
-import com.samsung.android.knox.net.firewall.FirewallRule.RuleType
+import com.example.block.ui.menu.MenuFragment
+import com.example.block.ui.report.ReportFragment
+import com.example.block.ui.settings.SettingsFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,28 +32,49 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-      /*  val logView = findViewById<TextView>(R.id.logview_id)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        mDPM = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager?
-        mDeviceAdmin = ComponentName(this, AdminReceiver::class.java)
-        mUtils = Utils(logView, TAG)
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            var selectedFragment: Fragment?
+
+            when (it.itemId) {
+                R.id.navigation_menu -> selectedFragment = MenuFragment.newInstance()
+                R.id.navigation_report -> selectedFragment = ReportFragment.newInstance()
+                R.id.navigation_settings -> selectedFragment = SettingsFragment.newInstance()
+                else -> throw UnsupportedOperationException("Невозможно выбрать фрагмент для отображения")
+            }
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frame_layout, selectedFragment)
+            transaction.commit()
+            true
+        }
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame_layout, MenuFragment.newInstance())
+        transaction.commit()
 
 
-        mToggleAdminBtn = findViewById(R.id.toggleAdmin)
 
-        mToggleAdminBtn!!.setOnClickListener { toggleAdmin() }
+          mDPM = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager?
+        /*     mDeviceAdmin = ComponentName(this, AdminReceiver::class.java)
+            mUtils = Utils(logView, TAG)
 
-        val activateLic = findViewById<Button>(R.id.license)
-        activateLic.setOnClickListener { activateLicence() }
 
-        val mLog = findViewById<Button>(R.id.log)
-        mLog.setOnClickListener { logInfo() }
+            mToggleAdminBtn = findViewById(R.id.toggleAdmin)
 
-        val firewall = findViewById<Button>(R.id.addFirewall)
-        firewall.setOnClickListener { callbackFirewall() }
+            mToggleAdminBtn!!.setOnClickListener { toggleAdmin() }
 
-        var requestButton = findViewById<Button>(R.id.reqHttp)
-        requestButton.setOnClickListener { requestHttp() }*/
+            val activateLic = findViewById<Button>(R.id.license)
+            activateLic.setOnClickListener { activateLicence() }
+
+            val mLog = findViewById<Button>(R.id.log)
+            mLog.setOnClickListener { logInfo() }
+
+            val firewall = findViewById<Button>(R.id.addFirewall)
+            firewall.setOnClickListener { callbackFirewall() }
+
+            var requestButton = findViewById<Button>(R.id.reqHttp)
+            requestButton.setOnClickListener { requestHttp() }*/
     }
 
     /*private fun requestHttp() {

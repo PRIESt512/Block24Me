@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.block">
-
-    <!--<uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />-->
+    <!-- <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" /> -->
     <uses-permission android:name="android.permission.sec.MDM_FIREWALL"/>
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_FIREWALL"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <permission
             android:name="com.example.supportlibclient.SUPPORT_PERMISSION"
             android:label="Support permission"
@@ -19,7 +19,12 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-
+        <activity android:name=".Menu">
+        </activity>
+        <activity android:name=".Report">
+        </activity>
+        <activity android:name=".Settings">
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -29,24 +34,23 @@
         </activity>
 
         <receiver
-                android:name="com.example.block.AdminReceiver"
+                android:name=".AdminReceiver"
                 android:description="@string/enterprise_device_admin_description"
                 android:label="@string/enterprise_device_admin"
                 android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                     android:name="android.app.device_admin"
                     android:resource="@xml/device_admin_receiver"/>
+
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
             </intent-filter>
         </receiver>
-
-        <receiver android:name="com.example.block.LicenseReceiver">
+        <receiver android:name=".LicenseReceiver">
             <intent-filter>
                 <action android:name="com.samsung.android.knox.intent.action.KNOX_LICENSE_STATUS"/>
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
