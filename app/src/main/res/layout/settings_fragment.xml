@@ -12,9 +12,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp">
-        <Switch
+        <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchAdmin"
                 android:text="@string/admin_rule"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/switchAdmin"/>
+                android:layout_height="wrap_content"
+                android:textOff="@string/switch_off"
+                android:textOn="@string/switch_on"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
