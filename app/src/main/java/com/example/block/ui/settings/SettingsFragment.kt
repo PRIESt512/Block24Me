@@ -8,12 +8,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.SwitchCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import com.example.block.AdminReceiver
 import com.example.block.R
+import com.example.block.knox.License
+import com.samsung.android.knox.license.KnoxEnterpriseLicenseManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -25,7 +28,7 @@ class SettingsFragment : Fragment() {
 
     private val TAG = "SettingsFragment"
 
-    private val DEVICE_ADMIN_ADD_RESULT_ENABLE = 1
+    private val ADMIN_ADD_RESULT_ENABLE = 1
 
     private lateinit var viewModel: SettingsViewModel
 
@@ -33,22 +36,32 @@ class SettingsFragment : Fragment() {
 
     private lateinit var mDeviceAdmin: ComponentName
 
+    private lateinit var licenseManager: KnoxEnterpriseLicenseManager
+
+    private lateinit var viewFragment: View
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.settings_fragment, container, false)
+        viewFragment = inflater.inflate(R.layout.settings_fragment, container, false)
 
         mDPM = activity!!.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        mDeviceAdmin = ComponentName(view.context, AdminReceiver::class.java)
+        mDeviceAdmin = ComponentName(viewFragment.context, AdminReceiver::class.java)
+        licenseManager = KnoxEnterpriseLicenseManager.getInstance(viewFragment.context)
 
-        val switch: SwitchCompat = view!!.findViewById(R.id.switchAdmin)
+        val switchAdmin = viewFragment.findViewById<SwitchCompat>(R.id.switchAdmin)
         if (mDPM.isAdminActive(mDeviceAdmin)) {
-            switch.toggle()
+            switchAdmin.toggle()
+            Log.i(TAG, "Проверка прав администратора - права администратора предоставлены")
         }
-        switch.setOnCheckedChangeListener(this::switchAdminRules)
+        switchAdmin.setOnCheckedChangeListener(this::switchAdminRules)
 
-        return view
+        //TODO: сделать запись об успешности активации в SQLite
+        val switchKnox = viewFragment.findViewById<SwitchCompat>(R.id.switchKnox)
+        switchKnox.setOnCheckedChangeListener(this::switchKnox)
+
+        return viewFragment
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -57,6 +70,9 @@ class SettingsFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    /**
+     * Активация/деактивация прав администратора приложения
+     */
     private fun switchAdminRules(button: CompoundButton, isChecked: Boolean) {
         GlobalScope.launch {
             if (isChecked) {
@@ -69,10 +85,25 @@ class SettingsFragment : Fragment() {
                     DevicePolicyManager.EXTRA_ADD_EXPLANATION,
                     "Предоставьте права администратора для корректной работы приложения"
                 )
-                startActivityForResult(intent, DEVICE_ADMIN_ADD_RESULT_ENABLE)
+                startActivityForResult(intent, ADMIN_ADD_RESULT_ENABLE)
+                Log.d(TAG, "Включение предоставления прав администратора")
             } else {
-                mDPM.removeActiveAdmin(ComponentName(view!!.context, AdminReceiver::class.java))
+                mDPM.removeActiveAdmin(ComponentName(viewFragment.context, AdminReceiver::class.java))
             }
+
+        }
+    }
+
+    /**
+     * Активация/деактивация KNOX-лицензии на конкретном устройстве
+     */
+    private fun switchKnox(button: CompoundButton, isChecked: Boolean) {
+        if (isChecked) {
+            Log.i(TAG, "Активация лицензии KNOX")
+            licenseManager.activateLicense(License.getLicenseCode())
+        } else {
+            Log.i(TAG, "Деактивация лицензии KNOX")
+            licenseManager.deActivateLicense(License.getLicenseCode())
         }
     }
 }

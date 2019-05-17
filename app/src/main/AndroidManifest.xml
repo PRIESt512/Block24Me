@@ -19,12 +19,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".Menu">
-        </activity>
-        <activity android:name=".Report">
-        </activity>
-        <activity android:name=".Settings">
-        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -46,7 +40,7 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".LicenseReceiver">
+        <receiver android:name=".knox.LicenseReceiver">
             <intent-filter>
                 <action android:name="com.samsung.android.knox.intent.action.KNOX_LICENSE_STATUS"/>
             </intent-filter>

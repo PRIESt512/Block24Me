@@ -1,10 +1,11 @@
-package com.example.block
+package com.example.block.knox
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import com.example.block.R
 import com.samsung.android.knox.license.KnoxEnterpriseLicenseManager
 
 class LicenseReceiver : BroadcastReceiver() {
@@ -41,18 +42,19 @@ class LicenseReceiver : BroadcastReceiver() {
                 if (errorCode == KnoxEnterpriseLicenseManager.ERROR_NONE) {
                     // Key activated or deactivated successfully
                     showToast(context, R.string.klm_action_successful)
-                    Log.d(
+                    Log.i(
                         "LicenseReceiver", context.getString(
-                            R.string
-                                .klm_action_successful
+                            R.string.klm_action_successful
                         )
                     )
                     return
                 } else {
                     // activation failed
                     when (errorCode) {
-                        KnoxEnterpriseLicenseManager.ERROR_INTERNAL -> msg_res = R.string.err_klm_internal
-                        KnoxEnterpriseLicenseManager.ERROR_INTERNAL_SERVER -> msg_res = R.string.err_klm_internal_server
+                        KnoxEnterpriseLicenseManager.ERROR_INTERNAL -> msg_res =
+                            R.string.err_klm_internal
+                        KnoxEnterpriseLicenseManager.ERROR_INTERNAL_SERVER -> msg_res =
+                            R.string.err_klm_internal_server
                         KnoxEnterpriseLicenseManager.ERROR_INVALID_LICENSE -> msg_res =
                             R.string.err_klm_licence_invalid_license
                         KnoxEnterpriseLicenseManager.ERROR_INVALID_PACKAGE_NAME -> msg_res =
@@ -61,11 +63,14 @@ class LicenseReceiver : BroadcastReceiver() {
                             R.string.err_klm_licence_terminated
                         KnoxEnterpriseLicenseManager.ERROR_NETWORK_DISCONNECTED -> msg_res =
                             R.string.err_klm_network_disconnected
-                        KnoxEnterpriseLicenseManager.ERROR_NETWORK_GENERAL -> msg_res = R.string.err_klm_network_general
+                        KnoxEnterpriseLicenseManager.ERROR_NETWORK_GENERAL -> msg_res =
+                            R.string.err_klm_network_general
                         KnoxEnterpriseLicenseManager.ERROR_NOT_CURRENT_DATE -> msg_res =
                             R.string.err_klm_not_current_date
-                        KnoxEnterpriseLicenseManager.ERROR_NULL_PARAMS -> msg_res = R.string.err_klm_null_params
-                        KnoxEnterpriseLicenseManager.ERROR_UNKNOWN -> msg_res = R.string.err_klm_unknown
+                        KnoxEnterpriseLicenseManager.ERROR_NULL_PARAMS -> msg_res =
+                            R.string.err_klm_null_params
+                        KnoxEnterpriseLicenseManager.ERROR_UNKNOWN -> msg_res =
+                            R.string.err_klm_unknown
                         KnoxEnterpriseLicenseManager.ERROR_USER_DISAGREES_LICENSE_AGREEMENT -> msg_res =
                             R.string.err_klm_user_disagrees_license_agreement
 
@@ -78,14 +83,14 @@ class LicenseReceiver : BroadcastReceiver() {
                                 errorStatus
                             )
                             showToast(context, msg)
-                            Log.d("LicenseReceiver", msg)
+                            Log.e("LicenseReceiver", msg)
                             return
                         }
                     }
 
                     // Display KLM error message
                     showToast(context, msg_res)
-                    Log.d("LicenseReceiver", context.getString(msg_res))
+                    Log.i("LicenseReceiver", context.getString(msg_res))
                     return
                 }
             }

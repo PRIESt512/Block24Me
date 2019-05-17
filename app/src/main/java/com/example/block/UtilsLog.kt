@@ -3,10 +3,9 @@ package com.example.block
 import android.content.Context
 import android.support.v7.app.AlertDialog
 import android.util.Log
-import android.widget.TextView
 import com.samsung.android.knox.EnterpriseDeviceManager
 
-class Utils(private val textView: TextView, private val TAG: String) {
+class UtilsLog(private val TAG: String) {
 
     /** Check Knox API level on device, if it does not meet minimum requirement, end user
      * cannot use the applciation  */
@@ -31,9 +30,9 @@ class Utils(private val textView: TextView, private val TAG: String) {
 
     /** Log results to a textView in application UI  */
     fun log(text: String) {
-        textView.append(text)
+       /* textView.append(text)
         textView.append("\n\n")
-        textView.invalidate()
+        textView.invalidate()*/
         Log.d(TAG, text)
     }
 
@@ -42,9 +41,9 @@ class Utils(private val textView: TextView, private val TAG: String) {
         if (ex != null) {
             // present the exception message
             val msg = ex.javaClass.canonicalName + ": " + ex.message
-            textView.append(msg)
+           /* textView.append(msg)
             textView.append("\n\n")
-            textView.invalidate()
+            textView.invalidate()*/
             Log.e(TAG, msg)
         }
     }

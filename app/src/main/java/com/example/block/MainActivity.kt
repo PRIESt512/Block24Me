@@ -8,7 +8,6 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
-import android.widget.TextView
 import com.example.block.ui.menu.MenuFragment
 import com.example.block.ui.report.ReportFragment
 import com.example.block.ui.settings.SettingsFragment
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private var mDeviceAdmin: ComponentName? = null
 
-    private var mUtils: Utils? = null
+    private var mUtilsLog: UtilsLog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         bottomNavigationView.setOnNavigationItemSelectedListener {
-            var selectedFragment: Fragment?
+            val selectedFragment: Fragment?
 
             when (it.itemId) {
                 R.id.navigation_menu -> selectedFragment = MenuFragment.newInstance()
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
           mDPM = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager?
         /*     mDeviceAdmin = ComponentName(this, AdminReceiver::class.java)
-            mUtils = Utils(logView, TAG)
+            mUtilsLog = UtilsLog(logView, TAG)
 
 
             mToggleAdminBtn = findViewById(R.id.toggleAdmin)
@@ -105,17 +104,17 @@ class MainActivity : AppCompatActivity() {
         val adminState = mDPM!!.isAdminActive(mDeviceAdmin)
 
         if (adminState) {
-            mUtils!!.log(getString(R.string.deactivating_admin))
+            mUtilsLog!!.log(getString(R.string.deactivating_admin))
             mDPM!!.removeActiveAdmin(ComponentName(this, AdminReceiver::class.java))
             mToggleAdminBtn!!.text = getString(R.string.activate_admin)
         } else {
             try {
-                mUtils!!.log(getString(R.string.activating_admin))
+                mUtilsLog!!.log(getString(R.string.activating_admin))
                 val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin)
                 startActivityForResult(intent, DEVICE_ADMIN_ADD_RESULT_ENABLE)
             } catch (e: Exception) {
-                mUtils!!.processException(e, TAG)
+                mUtilsLog!!.processException(e, TAG)
             }
         }
     }
@@ -133,10 +132,10 @@ class MainActivity : AppCompatActivity() {
         try {
             // License Activation TODO Add license key to Constants.java
             licenseManager.activateLicense("KLM06-65D9B-T59GT-41885-TTD52-ZZYWR")
-            mUtils!!.log(resources.getString(R.string.license_progress))
+            mUtilsLog!!.log(resources.getString(R.string.license_progress))
 
         } catch (e: Exception) {
-            mUtils!!.processException(e, TAG)
+            mUtilsLog!!.processException(e, TAG)
         } finally {
             isLicense = false
         }
@@ -150,7 +149,7 @@ class MainActivity : AppCompatActivity() {
                 "com.samsung.android.knox.permission.KNOX_FIREWALL"
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            mUtils!!.log("NOOO!")
+            mUtilsLog!!.log("NOOO!")
         }
         val edm = EnterpriseDeviceManager.getInstance(this)
         val firewall = edm.firewall
@@ -239,18 +238,18 @@ class MainActivity : AppCompatActivity() {
 
                 //firewall.enableDomainFilterOnIptables(true)
                 if (response[0].result == FirewallResponse.Result.SUCCESS) {
-                    mUtils!!.log("\nSUCCESS add firewall")
+                    mUtilsLog!!.log("\nSUCCESS add firewall")
                     val isReport = firewall.enableDomainFilterReport(true)
                     if (isReport.result == FirewallResponse.Result.SUCCESS) {
-                        mUtils!!.log("Report YES")
+                        mUtilsLog!!.log("Report YES")
                     }
                 } else {
-                    mUtils!!.log("\nERROR add firewall")
+                    mUtilsLog!!.log("\nERROR add firewall")
                 }
             } catch (ex: SecurityException) {
-                mUtils!!.log(ex.toString())
+                mUtilsLog!!.log(ex.toString())
             } finally {
-                responseEnable?.message?.let { mUtils!!.log(it) }
+                responseEnable?.message?.let { mUtilsLog!!.log(it) }
             }
 
             flag = false
@@ -259,15 +258,15 @@ class MainActivity : AppCompatActivity() {
                 val response = firewall.removeDomainFilterRules(DomainFilterRule.CLEAR_ALL)
 
                 if (response[0].result == FirewallResponse.Result.SUCCESS) {
-                    mUtils!!.log("\nSUCCESS remove firewall")
+                    mUtilsLog!!.log("\nSUCCESS remove firewall")
                 } else {
-                    mUtils!!.log("\nERROR remove firewall")
+                    mUtilsLog!!.log("\nERROR remove firewall")
                 }
             } catch (ex: SecurityException) {
-                mUtils!!.log(ex.toString())
+                mUtilsLog!!.log(ex.toString())
             }
             val responseDisable = firewall.enableFirewall(false)
-            mUtils!!.log(responseDisable.message)
+            mUtilsLog!!.log(responseDisable.message)
             flag = true
         }
     }
@@ -280,10 +279,10 @@ class MainActivity : AppCompatActivity() {
         try {
             // License deactivation
             licenseManager.deActivateLicense("KLM06-65D9B-T59GT-41885-TTD52-ZZYWR")
-            mUtils!!.log(resources.getString(R.string.license_deactivation))
+            mUtilsLog!!.log(resources.getString(R.string.license_deactivation))
 
         } catch (e: Exception) {
-            mUtils!!.processException(e, TAG)
+            mUtilsLog!!.processException(e, TAG)
         }
     }
 
@@ -296,10 +295,10 @@ class MainActivity : AppCompatActivity() {
         try {
             val reports = firewall.getDomainFilterReport(null)
             if (reports.isNotEmpty()) {
-                reports.forEach { mUtils!!.log("\n Домен: ${it.domainUrl}, packageName: ${it.packageName}") }
+                reports.forEach { mUtilsLog!!.log("\n Домен: ${it.domainUrl}, packageName: ${it.packageName}") }
             }
         } catch (ex: SecurityException) {
-            mUtils!!.log("Error log!")
+            mUtilsLog!!.log("Error log!")
         }
     }*/
 
