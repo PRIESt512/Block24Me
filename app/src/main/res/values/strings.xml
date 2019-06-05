@@ -30,15 +30,14 @@
     <string name="klm_action_successful">Action successful</string>
 
     <!-- UI elements -->
-    <string name="license_progress">Activating license...</string>
-    <string name="license_deactivation">Deactivating license...</string>
+    <string name="license_progress">Activating license&#8230;</string>
+    <string name="license_deactivation">Deactivating license&#8230;</string>
     <string name="permissions_failed">Failed to grant runtime permissions %1$s to package</string>
     <string name="permissions_granted">Granted runtime permissions %1$s to package</string>
     <string name="admin_cancelled">Device admin activation cancelled</string>
     <string name="admin_activated">Device administrator activated</string>
-    <string name="activating_admin">Activating device administrator...</string>
-    <string name="deactivating_admin">Deactivating device administrator... </string>
-    <string name="camera_state">Camera is enabled: %1$b</string>
+    <string name="activating_admin">Activating device administrator&#8230;</string>
+    <string name="deactivating_admin">Deactivating device administrator&#8230;</string>
     <string name="permission">com.samsung.android.knox.permission.KNOX_HW_CONTROL</string>
 
     <string name="api_level_message">This device does not support the new Knox SDK and Samsung Knox Licence (SKL)
@@ -46,5 +45,15 @@
     </string>
 
     <string name="api_level_notice">App Requirement</string>
+
+    <string name="item_menu_main">Меню</string>
+    <string name="item_menu_log">Отчет</string>
+    <string name="item_menu_settings">Настройки</string>
+
+    <string name="admin_rule">Предоставление прав администратора</string>
+    <string name="switch_on">ON</string>
+    <string name="switch_off">OFF</string>
+
+    <string name="license_knox">Активация KNOX</string>
 
 </resources>

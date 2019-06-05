@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.settings.SettingsFragment">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp">
+        <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchAdmin"
+                android:text="@string/admin_rule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textOff="@string/switch_off"
+                android:textOn="@string/switch_on"/>
+        <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchKnox"
+                android:text="@string/license_knox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textOff="@string/switch_off"
+                android:textOn="@string/switch_on"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
