@@ -1,8 +1,8 @@
 package com.example.block
 
 import android.content.Context
-import android.support.v7.app.AlertDialog
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import com.samsung.android.knox.EnterpriseDeviceManager
 
 class UtilsLog(private val TAG: String) {

@@ -1,18 +1,18 @@
 package com.example.block.ui.settings
 
 import android.app.admin.DevicePolicyManager
-import android.arch.lifecycle.ViewModelProviders
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.SwitchCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import androidx.appcompat.widget.SwitchCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.example.block.AdminReceiver
 import com.example.block.R
 import com.example.block.knox.License
