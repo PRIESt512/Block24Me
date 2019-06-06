@@ -2,15 +2,25 @@ package com.example.block
 
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
-import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.block.db.entity.AppDatabase
+import com.example.block.db.entity.Block
 import com.example.block.ui.menu.MenuFragment
 import com.example.block.ui.report.ReportFragment
 import com.example.block.ui.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.samsung.android.knox.AppIdentity
+import com.samsung.android.knox.EnterpriseDeviceManager
+import com.samsung.android.knox.net.firewall.DomainFilterRule
+import com.samsung.android.knox.net.firewall.Firewall
+import com.samsung.android.knox.net.firewall.FirewallResponse
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -53,8 +63,10 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
 
 
+        AppDatabase.instanceDatabase(this)
+        readTextInDB()
 
-          mDPM = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager?
+        //mDPM = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager?
         /*     mDeviceAdmin = ComponentName(this, AdminReceiver::class.java)
             mUtilsLog = UtilsLog(logView, TAG)
 
@@ -74,6 +86,78 @@ class MainActivity : AppCompatActivity() {
 
             var requestButton = findViewById<Button>(R.id.reqHttp)
             requestButton.setOnClickListener { requestHttp() }*/
+    }
+
+    private fun readTextInDB() {
+        val edm = EnterpriseDeviceManager.getInstance(this)
+
+        CheckPermission.check(this)
+
+        GlobalScope.launch {
+            val db = AppDatabase.getDatabase()
+            val listBlock = db.blockDao().getAll()
+            if (listBlock.isNotEmpty()) {
+
+                val firewall = edm.firewall
+                val rules = ArrayList<DomainFilterRule>()
+
+                val denyList = ArrayList<String>()
+
+                listBlock.forEach {
+                    denyList.add(it.url)
+                }
+                rules.add(
+                    DomainFilterRule(
+                        AppIdentity(Firewall.FIREWALL_ALL_PACKAGES, null),
+                        denyList,
+                        emptyList()
+                    )
+                )
+
+                try {
+                    val response = firewall.addDomainFilterRules(rules)
+
+                    val responseEnable = firewall.enableFirewall(true)
+
+                    //firewall.enableDomainFilterOnIptables(true)
+                    if (response[0].result == FirewallResponse.Result.SUCCESS) {
+                        Log.d(TAG, "SUCCESS add firewall")
+                        val isReport = firewall.enableDomainFilterReport(true)
+                        if (isReport.result == FirewallResponse.Result.SUCCESS) {
+                            Log.d(TAG, "Report YES")
+                        }
+                    } else {
+                        Log.d(TAG, "\nERROR add firewall")
+                    }
+                } catch (ex: SecurityException) {
+                    Log.d(TAG, ex.message)
+                }
+
+            } else {
+                db.blockDao().deleteAll()
+
+                val stream = resources.openRawResource(R.raw.text)
+                val list = ArrayList<String>()
+
+                stream.bufferedReader().lines().forEach {
+                    try {
+                        db.blockDao().insert(Block(it))
+                    } catch (ex: Exception) {
+                        Log.e("test", it.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            CheckPermission.MY_PERMISSION_CODE_KNOX_FIREWALL -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Log.e(TAG, "УРА!!!")
+                }
+            }
+        }
     }
 
     /*private fun requestHttp() {

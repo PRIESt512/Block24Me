@@ -8,8 +8,11 @@ import androidx.room.Query
 interface BlockDao {
 
     @Query("SELECT * FROM block")
-     fun getAll() : List<Block>
+    fun getAll(): List<Block>
 
     @Insert
     fun insert(vararg blocks: Block)
+
+    @Query("DELETE FROM block")
+    fun deleteAll()
 }
